@@ -23,7 +23,7 @@ app.use(express.json());
 
 
 // Route middleware
-// app.use('/api/auth', authRoutes)
+app.use('/api/auth', authRoutes)
 // app.use('/api/products', productRoutes)
 // app.use('/api/chats', chatRoutes)
 // app.use('/api/users', userRoutes)
