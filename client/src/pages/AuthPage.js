@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [role, setRole] = useState('customer'); // 'customer' or 'owner'
 
   const toggleAuthMode = () => {
@@ -10,6 +12,24 @@ function AuthPage() {
 
   const handleRoleChange = (event) => {
     setRole(event.target.value);
+  }
+
+  const handleAuth = async (e)=> {
+    e.preventDefault();
+
+    const endpoint = isLogin? 'api/auth/login' : 'api/auth/register';
+    const data ={
+      email,
+      password,
+      role
+    }
+
+    try {
+      const response = await axios.post(endpoint, data);
+      console.log('Success', response.data);
+        } catch(error) {
+          console.error('Error:', error.resposne?.data || error.message)
+        }
   }
 
   return (
@@ -35,7 +55,7 @@ function AuthPage() {
               id="role"
               name="role"
               value={role}
-              onChange={handleRoleChange}
+              onChange={(e)=> setRole(e.target.value)}
               className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             >
               <option value="customer">Customer</option>
@@ -56,6 +76,8 @@ function AuthPage() {
                   required
                   autoComplete="email"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value ={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
             </div>
@@ -81,7 +103,9 @@ function AuthPage() {
                   required
                   autoComplete="current-password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                  value ={password}
+                  onChange={(e)=> setPassword(e.target.value)}
+                  />
               </div>
             </div>
 
